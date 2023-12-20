@@ -4,6 +4,7 @@ const CONTROLLER_ORDER = require("./controllers/order");
 
 const sequelize = require("./config/db.connection");
 const OrderList = require("./schemas/OrderList");
+const path = require("path");
 
 const CONTROLLER_PRODUCT = require("./controllers/product");
 
@@ -33,6 +34,11 @@ function main() {
     .route("/api/product/:id")
     .put(CONTROLLER_PRODUCT.PUT)
     .delete(CONTROLLER_PRODUCT.DELETE);
+
+  app.use(express.static("out"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(process.cwd(), "out", "index.html"));
+  });
 
   app.listen(80, () => {
     console.log("Server running 🏭");
